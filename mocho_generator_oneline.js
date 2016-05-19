@@ -49,7 +49,7 @@ co(function *() {
   // ループして文章を作る
   for(let i = 0; i < 10000000; i++) {
     const triplet = yield getTriplets(prefix1, prefix2)
-    if (triplet[2] === END || triplet[2] === 'EOS') break
+    if (triplet[2] === END || /\d+_EOS/.test(triplet[2])) break
     generated_text += triplet[2]
     prefix1 = triplet[1]
     prefix2 = triplet[2]
@@ -57,7 +57,7 @@ co(function *() {
 
   database.close()
 
-  generated_text = generated_text.replace(BEGIN, '').replace(END, '').replace(/EOS/g, '\n')
+  generated_text = generated_text.replace(BEGIN, '').replace(END, '').replace(/\d+_EOS/g, '\n')
   console.log(generated_text)
 
 })

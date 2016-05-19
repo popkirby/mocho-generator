@@ -57,7 +57,15 @@ co(function *() {
 
   database.close()
 
-  generated_text = generated_text.replace(BEGIN, '').replace(END, '').replace(/EOS/g, '\n')
+  generated_text = generated_text.replace(BEGIN, '').replace(END, '')
+  generated_text = generated_text.replace(/(\d+)_EOS/g, (_, p1) => {
+    let nl = ''
+    for (let i = 0; i < p1; i++) {
+      nl += '\n'
+    }
+    return nl
+  })
+
   console.log(generated_text)
 
 })

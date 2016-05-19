@@ -41,9 +41,19 @@ function createTriplets(morphemes) {
 const tripletFreqs = {}
 
 for (let files of mocho_files) {
-  const fileStr = fs.readFileSync(`articles/${files}`).toString().replace(/\n{2,}/g, '\n')
-  // 形態素解析
-  const morphemes = mecab.wakachiSync(fileStr)
+  const fileStr = fs.readFileSync(`articles/${files}`).toString()
+  // 形態素解析 + 改行をまとめる
+  let morphemes = []
+  mecab.wakachiSync(fileStr).reduce((prev, curr) => {
+    if (curr === "EOS") {
+      return prev + 1
+    } else {
+      if (prev > 0) morphemes.push(prev + "_EOS")
+      morphemes.push(curr)
+      return 0
+    }
+  }, 0)
+
   // 3つ組を取得
   const triplets = createTriplets(morphemes)
   
