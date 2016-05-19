@@ -56,7 +56,7 @@ co(function *() {
   }
 
   for (let articleUrl of articleUrls) {
-    let content = yield getArticleContent(articleUrl)
+    let content = yield getArticleContent(articleUrl) + '\n'
     fs.writeFile(`articles/${articleUrl.match(/entry-(\d+)\.html/)[1]}.txt`, content)
     sleep.usleep(500000)
   }
