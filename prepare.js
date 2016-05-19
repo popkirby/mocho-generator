@@ -41,7 +41,7 @@ function createTriplets(morphemes) {
 const tripletFreqs = {}
 
 for (let files of mocho_files) {
-  const fileStr = fs.readFileSync(`articles/${files}`).toString()
+  const fileStr = fs.readFileSync(`articles/${files}`).toString().replace(/\n{2,}/g, '\n')
   // 形態素解析
   const morphemes = mecab.wakachiSync(fileStr)
   // 3つ組を取得
